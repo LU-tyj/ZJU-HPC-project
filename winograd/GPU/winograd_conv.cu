@@ -84,9 +84,22 @@ void winograd_conv(thrust::device_vector<float>& image,
 {
     const int outH = H - 2;
     const int outW = W - 2;
-    const int threads_per_block = 256;
 
+    int threads_per_block;
     int num_threads = (outH / 2) * (outW / 2);
+    if(num_threads < 32){
+        threads_per_block = 32;
+    } else if(num_threads < 64){
+        threads_per_block = 64;
+    } else if(num_threads < 128){
+        threads_per_block = 128;
+    } else if(num_threads < 256){
+        threads_per_block = 256;
+    } else if(num_threads < 512){
+        threads_per_block = 512;
+    } else {
+        threads_per_block = 1024;
+    }
     dim3 grid_size = dim3(N * K, (num_threads + threads_per_block - 1) / threads_per_block);
     size_t smem_size = C * 4 * 4 * sizeof(float);
     winograd_conv_kernel<<<grid_size, threads_per_block, smem_size>>>(
