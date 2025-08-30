@@ -1,0 +1,4 @@
+==> Error: Spec 'nccl' matches no installed packages.
+./bin/xhpcg: error while loading shared libraries: libmpi.so.40: cannot open shared object file: No such file or directory
+./bin/xhpcg: error while loading shared libraries: libmpi.so.40: cannot open shared object file: No such file or directory
+srun: error: v31: tasks 0-1: Exited with exit code 127
